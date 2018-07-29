@@ -1,0 +1,76 @@
+{% extends 'base.html.twig' %}
+{% block title %} RKN {% endblock %}
+{% block body %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col col-md-8 col-sm-12">
+                <p style="text-align: justify">
+                DDDDDDDDDDD DDDDDD DD DDDDDD DDDD DDDDD DDDDDD DDDDDD DDDDDDDD DDDD DDDD Dddd dddddd dddd ddddddd dddd dddddddd dddddd ddd ddddddd
+                </p>
+                <br>
+                <button type="button" class="btn btn-primary">Czytaj więcej</button>
+                <br>
+            </div><br>
+            <div class="col col-md-4 col-sm-12">
+                <div class="container-fluid">
+
+                </div>
+                <div class="container-fluid">
+                    <br>
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Wyszukaj na stronie">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button"><i class="fas fa-search"></i></button>
+                        </span>
+                    </div><br>
+                </div>
+                <div class="container-fluid">
+                    <h5>Kalendarz</h5>
+                    {% include 'inc/calendar.html.twig' %}
+                </div><br>
+                <div class="container-fluid">
+                    <h5>Najczęściej odwiedzane</h5>
+                    <button type="button sm" class="btn btn-outline-primary">Primary</button>
+                    <button type="button" class="btn btn-outline-primary">Primary</button>
+                    <button type="button" class="btn btn-outline-primary">Primary</button>
+                    <button type="button" class="btn btn-outline-primary">Primary</button>
+                </div><br>
+            </div>
+        </div>
+    </div>
+    <div class="row bg-dark text-light">
+        <div class="container-fluid" style="text-align: center">
+            <br>
+            <h5>Ponad 159 Kół Naukowych na PW</h5>
+            Wyszukaj Koła dla siebie
+            <br>
+            {% include 'KN lists/KNcarousel.html.twig' %}
+            <br><br>
+        </div>
+    </div>
+    <div class="row">
+        <br>
+        <div class="col" style="text-align: center">
+            <br>
+            <h5>Obserwuj nas na Facebook:</h5>
+            <script>(function(d, s, id) {
+                    var js, fjs = d.getElementsByTagName(s)[0];
+                    if (d.getElementById(id)) return;
+                    js = d.createElement(s); js.id = id;
+                    js.src = 'https://connect.facebook.net/pl_PL/sdk.js#xfbml=1&version=v2.12&appId=1709959529064428&autoLogAppEvents=1';
+                    fjs.parentNode.insertBefore(js, fjs);
+                }(document, 'script', 'facebook-jssdk'));</script>
+
+            <div class="fb-page" data-href="https://www.facebook.com/RKNPW/" data-tabs="timeline" data-width="500" data-height="300" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/RKNPW/" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/RKNPW/">Rada Kół Naukowych pw</a></blockquote></div>
+            <br>
+        </div><br>
+        <div class="col pb-4" style="text-align: center">
+            <br>
+            <h5>Obserwuj nas na Twitter:</h5>
+            <a class="twitter-timeline" data-width="500" data-height="300" data-dnt="true" data-theme="light" href="https://twitter.com/rkn_pw?ref_src=twsrc%5Etfw">Tweets by rkn_pw</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+            <br>
+        </div>
+        <br>
+    </div>
+
+{% endblock %}
