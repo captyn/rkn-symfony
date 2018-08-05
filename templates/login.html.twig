@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+
+<form action="" method="post">
+    <table>
+        <tr>
+            <td>Login</td>
+            <td><?php
+      $field = new rageInput('l');
+      $field->output();
+                ?></td>
+        </tr><tr>
+            <td>Hasło</td>
+            <td><?php
+      $field = new rageInput('p');
+      $field->asPassword(true);
+                $field->output();
+                ?></td>
+        </tr>
+    </table>
+    <?php
+
+?><input type="submit" value="Wyślij" /></form>
+{% endblock %}

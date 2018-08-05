@@ -5,7 +5,13 @@
         <div class="row">
             <div class="col col-md-8 col-sm-12">
                 <p style="text-align: justify">
-                DDDDDDDDDDD DDDDDD DD DDDDDD DDDD DDDDD DDDDDD DDDDDD DDDDDDDD DDDD DDDD Dddd dddddd dddd ddddddd dddd dddddddd dddddd ddd ddddddd
+                    {% for article in articles if article.deleted == FALSE %}
+                        {% if article.articletype == 'index' %}
+                            <h3>{{ article.title }}</h3>
+                            <small>{{ article.ModifiedTime|date('Y-m-d H:i') }}</small>
+                            <p style="text-align: justify">{{ article.body|raw }}</p>
+                        {% endif %}
+                    {% endfor %}
                 </p>
                 <br>
                 <button type="button" class="btn btn-primary">Czytaj więcej</button>

@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}SymphArt Articles{% endblock %}
+
+{% block body %}
+    <a href="/article/new" class="btn btn-primary btn-lg">Nowy Artykuł</a>
+    <br><br>
+    {% if articles %}
+        <br>
+        <table id="articles" class="table table-striped">
+            <thead>
+            <tr>
+                <th>Artykuł</th>
+                <th>Link</th>
+                <th>Typ</th>
+                <th>Edytowany przez</th>
+                <th>Data modyfikacji</th>
+                <th>Akcje</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for article in articles| sortbyfield('id') if article.deleted == FALSE %}
+                <tr>
+                    <td>{{ article.title }}</td>
+                    <td>/article/{{ article.id }}</td>
+                    <td>{{ article.articletype }}</td>
+                    <td>{{ article.modifiedby }}</td>
+                    <td>{{ article.ModifiedTime|date('Y-m-d H:i') }}</td>
+                    <td>
+                        <a href="/article/{{ article.id }}" class="btn btn-dark">Show</a>
+                        <a href="/article/edit/{{ article.id }}" class="btn btn-light">Edit</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Brak artykułów</p>
+    {% endif %}
+{% endblock %}
