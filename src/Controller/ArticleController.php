@@ -20,6 +20,8 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class ArticleController extends Controller
 {
+
+
     /**
      * @Route("/", name="index")
      * @Method({"GET"})
@@ -57,6 +59,7 @@ class ArticleController extends Controller
                 'label' => 'Typ Artykułu',
                 'choices' => array(
                     'Artykuł na stronę główną' => 'index',
+                    'Archiwizuj (z głównej strony)' => 'archiwum',
                     'test' => 'test',
                     'Artykuł z informacjami' => 'info',
                 ),
@@ -99,6 +102,7 @@ class ArticleController extends Controller
                 'label' => 'Typ Artykułu',
                 'choices' => array(
                     'Artykuł na stronę główną' => 'index',
+                    'Archiwizuj (z głównej strony)' => 'archiwum',
                     'test' => 'test',
                     'Artykuł z informacjami' => 'info',
                 ),

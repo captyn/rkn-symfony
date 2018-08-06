@@ -36,14 +36,19 @@ class OlimpController extends Controller
 						WHERE o.org_type = 25152 AND o.active = true ORDER BY r.nazwa, o.nazwa 
           ");
 
-        /*echo 'DDDDDDDDDDd';
-        echo '<pre>';
-        print_r($res);
+        $reswww = $pgdb->Q("SELECT id,  org_type AS typ, www
+													FROM ew.organizacje
+													WHERE org_type = 25152 
+          ");
+        /*echo '<pre>';
+        print_r($reswww);
         echo '</pre>';*/
+        /*echo 'DDDDDDDDDDd';
+        */
         /*return $this->render('olimp/index.html.twig', [
             'controller_name' => 'OlimpController',
         ]);*/
-        return $this->render('olimp/index.html.twig', array('orgs' => $res, 'wydzials' => $resw));
+        return $this->render('olimp/index.html.twig', array('orgs' => $res, 'wydzials' => $resw, 'wwws' => $reswww,));
     }
 
     /**
@@ -57,5 +62,24 @@ class OlimpController extends Controller
 
 
         return $this->render('olimp/index.html.twig', array('orgs' => $res));
+    }
+
+    /**
+     * @Route("/team", name="team")
+     */
+    public function team()
+    {
+
+
+        $pgdb = new Olimp();
+        $pgdb->dbConnect();
+
+        $res = $pgdb->Q("SELECT o.uid AS id, o.org_id, o.role_type AS rola, o.name AS name, o.surname AS surname, r.contact AS mail, r.public AS mailpub 
+													FROM mainframe.vroles_active_extend o
+													LEFT JOIN ew.contacts r ON r.uid = o.uid
+						WHERE o.org_id = 54223  ORDER BY r.uid, o.uid
+          ");
+
+        return $this->render('olimp/team.html.twig', array('members' => $res));
     }
 }

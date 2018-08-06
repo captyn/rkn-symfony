@@ -14,3 +14,10 @@
 ###> symfony/web-server-bundle ###
 /.web-server-pid
 ###< symfony/web-server-bundle ###
+
+# Parameters
+/app/config/parameters.yml
+/app/config/parameters.ini
+
+# Parameters
+/src/Entity/*

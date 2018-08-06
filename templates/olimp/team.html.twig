@@ -1,0 +1,69 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+    <div class="container-fluid">
+    <div class="row">
+        {% set existingIds = [] %}
+        {% for member in members %}
+            {% if member.rola == 'CHAIRMAN' %}
+                {% if member.id not in existingIds %}
+                    <div class="col">
+                        {% if member.name|last == 'a' %}
+                            <h5>Przewodnicząca</h5>
+                        {% else %}
+                            <h5>Przewodniczący</h5>
+                        {% endif %}
+                        {{ member.name }} {{ member.surname }}
+                            {% set existingIds = existingIds|merge([member.id]) %}
+                {% endif %}
+                {% if member.mailpub == '200' %}
+                    {{ member.mail }}
+                {% endif %}
+                    </div>
+                <br>
+            {% else %}
+                {% if member.rola == 'BM' %}
+                    {% if member.rola == 'D' %}
+                        {% if member.id not in existingIds %}
+                            <div class="col">
+                            {% if member.name|last == 'a' %}
+                                {% set pnpn = '<h5>Wiceprzewodnicząca ds. Puli na Projekty Naukowe</h5>' %}
+                            {% endif %}
+                            {% if member.name|last == 'a' %}
+                                <h5>Wiceprzewodniczący ds. Puli na Projekty Naukowe</h5>
+                            {% endif %}
+                            {{ pnpn|raw }}
+                            {{ member.name }} {{ member.surname }}
+                            {% set existingIds = existingIds|merge([member.id]) %}
+                        {% endif %}
+                        {% if member.mailpub == '200' %}
+                            {{ member.mail }}
+                        {% endif %}
+                        </div>
+                    {% else %}
+                        {% if member.id not in existingIds %}
+                            <div class="col">
+                            {% if member.name|last == 'a' %}
+                                {% set ogolny = '<h5>Wiceprzewodnicząca ds. Ogólnych</h5>' %}
+                                {{ ogolny|raw }}
+                            {% else %}
+                                {% set ogolny = '<h5>Wiceprzewodniczący ds. Ogólnych</h5>' %}
+                            {% endif %}
+                            {{ member.name }} {{ member.surname }}
+                            {% set existingIds = existingIds|merge([member.id]) %}
+                        {% endif %}
+                        {% if member.mailpub == '200' %}
+                            {{ member.mail }}
+                        {% endif %}
+                        </div>
+                    {% endif %}
+                {% else %}
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+        {% set pnpn = '<h5>Wiceprzewodniczący ds. Puli na Projekty Naukowe</h5>' %}
+        {{ pnpn|raw }}
+    </div>
+    </div>
+{% endblock %}
