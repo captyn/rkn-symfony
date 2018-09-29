@@ -4,14 +4,18 @@
         <meta charset="UTF-8">
         <title>{% block title %}RKN PW{% endblock %}</title>
         {% block stylesheets %}
-            <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
-            <link rel="stylesheet" href="/stylesheets/fonts.css">
+            {#<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">#}
+            <link rel="stylesheet" href="/stylesheets/RKN1PW.css">
             <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
-
+            <link rel="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css">
+            <link rel="stylesheet" type="text/css" href="/addons/DataTables/datatables.min.css"/>
             <!-- add after bootstrap.min.css -->
             <link rel="stylesheet" href="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.0/dist/bootstrap-toc.min.css">
             <!-- add after bootstrap.min.js -->
+{#
             <script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.0/dist/bootstrap-toc.min.js"></script>
+#}
+            <link rel="stylesheet" href="/stylesheets/fonts.css">
 
             <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
 
@@ -44,11 +48,38 @@
     </div>
 
    {% block javascripts %}
+       <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em" crossorigin="anonymous"></script>
-
+       <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+       <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+       {#<script src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>#}
+       <script src="https://cdn.datatables.net/responsive/2.2.3/js/responsive.bootstrap4.min.js"></script>
+       <script src="/js/html5sortable-0.9.4/dist/html5sortable.min.js"></script>
+       <script type="text/javascript" src="/addons/datatables.min.js"></script>
+       <script type="text/javascript">
+           $(document).ready(function () {
+               $('#idatatable').DataTable( {
+                   "language": {
+                       "lengthMenu": "Wyświetl _MENU_ rekortów na stronę",
+                       "zeroRecords": "Brak wyników",
+                       "info": "Pokazuje _PAGE_ stron z _PAGES_",
+                       "infoEmpty": "Brak wyników",
+                       "infoFiltered": "(na _MAX_ możliwych rekordów)",
+                       "paginate": {
+                           "first":      "Pierwsza",
+                           "last":       "Ostatnia",
+                           "next":       "Następna",
+                           "previous":   "Poprzednia"
+                       },
+                       "search":         "Wyszukaj:",
+                   }
+               } );
+           });
+       </script>
    {% endblock %}
+   <br>
     {% include 'inc/footer.html.twig' %}
     </body>
 </html>

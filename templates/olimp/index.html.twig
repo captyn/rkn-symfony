@@ -1,51 +1,104 @@
 {% extends 'base.html.twig' %}
-
+{% block title %}Koła Naukowe Politechniki Warszawskiej {% endblock %}
 
 {% block body %}
     <style>
-        body {
-            position: relative;
+        a.card-link:focus, a.card-link:hover {
+            background-color: #6aba9c;
         }
     </style>
-    <body data-spy="scroll" data-target="#toc">
-  <div class="row">
-    <div class="container-fluid col-9">
+
+    <div class="row">
+    <div class="container-fluid col-md-9 col-sm-12 mt-3" id="accordion">
         <h3>Lista Kół Naukowych Politechniki Warszawskiej</h3>
-        <div class="list-group">
+        {#<div class="list-group">#}
+
             {% set counter = '1' %}
             {% set wcounter = '1' %}
             {% for wydzial in wydzials %}
             <br>
-            <li class="list-group-item list-group-item-action active" id="list-item-{{ wcounter }}">
-                <b>
-                    {{ wydzial.nazwa }}
-                </b>
-            </li>
+                <div class="card text-primary bg-secondary" id="list-item-{{ wcounter }}" >
+                    <div class="card-header text-center">
+                        <h5>{{ wydzial.nazwa }}</h5>
+                    </div>
+                </div>
             {% for org in orgs %}
                 {% if org.wydzial == wydzial.nazwa %}
-
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        {{ org.nazwa }}
-                        <i style="text-align: right">
-                            <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#dddd{{ counter }}">
-                                <i class="fas fa-caret-down"></i>
-                            </button>
-                        </i>
-                    </li>
-
-                        <li id="dddd{{ counter }}" class="collapse list-group-item list-group-item-action bg-light">
+                                {% set fb = 'empty' %}
+                                {% set website = 'empty' %}
+                                {% set opis = 'empty' %}
                                 {% for www in wwws %}
                                     {% if www.id == org.id %}
-                                        {% if www.www|first != 'h' %}
-                                            {% if www.www|first != null %}
-                                            <b>www: </b><a onclick='window.open("http://{{ www.www }}");return false;'><i>http://{{ www.www }}</i></a>
+                                        {% if www.type == 163842 %}
+                                            {% if www.www|first != 'h' %}
+                                                {% if www.www|first != null %}
+                                                    {% set website %}
+                                                        http://{{ www.www }}
+                                                    {% endset %}
+                                                {% endif %}
+                                            {% else %}
+                                                {% set website %}
+                                                    {{ www.www }}
+                                                {% endset %}
                                             {% endif %}
                                         {% else %}
-                                            <b>www: </b><a onclick='window.open("{{ www.www }}");return false;'><i>{{ www.www }}</i></a>
+                                            {% if www.www|first != 'h' %}
+                                                {% if www.www|first != null %}
+                                                    {% set fb %}
+                                                        http://{{ www.www }}
+                                                    {% endset %}
+                                                {% endif %}
+                                            {% else %}
+                                                {% set fb %}
+                                                    {{ www.www }}
+                                                {% endset %}
+                                            {% endif %}
+                                        {% endif %}
+                                        {% if www.opis is not null %}
+                                            {% set opis %}
+                                                <p style="text-align: justify">
+                                                    <b>Opis:</b>
+                                                    {{ www.opis }}
+                                                </p>
+                                            {% endset %}
                                         {% endif %}
                                     {% endif %}
                                 {% endfor %}
-                        </li>
+                    <div class="card ">
+                            {% if website!='empty' or fb!='empty' %}
+                                <a class="card-link text-dark" data-toggle="collapse" href="#target{{ counter }}">
+                                    <div class=" card-header">
+                                        {{ org.nazwa }}
+                                        <i class="float-right">
+                                            <i class="fas fa-caret-down"></i>
+                                        </i>
+                                    </div>
+                                </a>
+                        <div id="target{{ counter }}" class="collapse" data-parent="#accordion">
+                                <div class="card-body">
+                                    <b>Zobacz też:</b>
+                                    <br>
+                                    {% if website!='empty' %}
+                                        <a href="{{ website }}"><i class="fas fa-external-link-alt fa-2x"></i></a>
+                                        &nbsp;
+                                    {% endif %}
+                                    {% if fb!='empty' %}
+                                        &nbsp;
+                                        <a href="{{ fb }}"><i class="fab fa-facebook fa-2x"></i></a>
+                                    {% endif %}
+                                    {% if opis!='empty' %}
+                                        <br><br>
+                                        {{ opis }}
+                                    {% endif %}
+                                </div>
+                        </div>
+                            {% else %}
+                                <div class=" card-header">
+                                    {{ org.nazwa }}
+                                </div>
+                            {% endif %}
+
+                    </div>
                     {% set counter = counter + 1 %}
                 {% endif %}
             {% endfor %}
@@ -53,7 +106,7 @@
             {% endfor %}
 
 
-            <thead class="table-dark">
+            {#<thead class="table-dark">
             <tr>
                 <th>Brak Wydziału</th>
                 <th></th>
@@ -63,11 +116,11 @@
                 {% if org.wydzial == null %}
                     <tr>
                         <td>{{ org.nazwa }}</td>
-                        {#<td>
+                        #}{#<td>
                             <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#{{ org.id }}">Simple collapsible</button>
-                        </td>#}
+                        </td>#}{#
                     </tr>
-                    {#<tr>
+                    #}{#<tr>
                         <td>
                             <div id="{{ org.id }}" class="collapse">
                                 Lorem ipsum dolor sit amet, consectetur adipisicing elit,
@@ -75,35 +128,33 @@
                                 quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
                             </div>
                         </td>
-                    </tr>#}
+                    </tr>#}{#
                 {% endif %}
             {% endfor %}
-         <br>
+         <br>#}
         </div>
-    </div>
 
 
 
-    <div class="container-fluid col-3">
+
+    <div class="container-fluid col-md-3 col-sm-12 mt-3 bd-sidebar">
         <h3>Wydział</h3>
-        <nav id="toc" data-toggle="toc" class="sticky-top">
-            <ul  class="nav nav-tabs" role="tablist" >
-            {% set wcounter = '1' %}
-            {% for wydzial in wydzials %}
-                <li><small><a href="#list-item-{{ wcounter }}">{{ wydzial.nazwa }}</a></small></li>
-                {% set wcounter = wcounter + 1 %}
-            {% endfor %}
-            </ul>
+        <nav id="toc" data-toggle="toc" class="navbar navbar-inverse navbar-fixed-right sticky-top" >
+            {#<div class="navbar nav bg-secondary " style="margin-left: 0px; margin-right: 0px">#}
+                <ul  class="nav nav-tabs" role="tablist" >
+                {% set wcounter = '1' %}
+                {% for wydzial in wydzials %}
+                    <a href="#list-item-{{ wcounter }}" style="font-size: small"><li class="nav-item">{{ wydzial.nazwa }}</li></a>
+                    {% set wcounter = wcounter + 1 %}
+                {% endfor %}
+                </ul>
+            {#</div>#}
         </nav>
 
 
 
     </div>
-  </div>
-  </div>
+    </div>
+
     <br>
-    </body>
-    <script>
-        $('body').scrollspy({ target: '#toc' })
-    </script>
 {% endblock %}

@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Artykuł {% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-10">
+                {% if article %}
+                                <h3 style="text-align: center">{{ article.title }}</h3>
+                    <br><br>
+                    {{ article.body|raw }}
+                    <br><br>
+                    {% set existingIds = [] %}
+                    {% for member in members %}
+                        {% if article.modifiedby == member.id %}
+                            {% if member.id not in existingIds %}
+                                <small style="text-align: right">Autor: {{ member.name }} {{ member.surname }}</small><br>
+                                {% set existingIds = existingIds|merge([member.id]) %}
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                    <small style="text-align: right">Modyfikowano: {{ article.ModifiedTime|date('Y-m-d H:i') }}</small>
+                    <br><br>
+                {% else %}
+                    <h3 style="text-align: center">Brak artykułu o szukanym numerze</h3>
+                    <br>
+                    <div class="mx-auto" style="width: 350px;">
+                        <img class="" src="/img/else/sad.gif" alt="Smutek" style="float: inside">
+                    </div>
+                    <br>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

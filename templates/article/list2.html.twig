@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Lista Artykułów RKN{% endblock %}
+
+{% block body %}
+    <div class="container-fluid">
+        {#<div class="btn-group d-flex" role="group" aria-label="...">
+            <button type="button" class="btn btn-outline-primary w-100" href="https://rkn-symfony.sspw.pl/article/list">
+                <i class="far fa-newspaper fa-2x" style=" vertical-align: middle;"></i><span class="ml-2"><b>Artykuły</b></span>
+            </button>
+            <button type="button" class="btn btn-outline-primary w-100">
+                <i class="far fa-images fa-2x" style=" vertical-align: middle;"></i><span class="ml-2"><b>Obrazy</b></span>
+            </button>
+            <button type="button" class="btn btn-outline-primary w-100">
+                <i class="fas fa-file-upload fa-2x" style=" vertical-align: middle;"></i><span class="ml-2"><b>Pliki</b></span>
+            </button>
+        </div>#}
+    </div>
+    <br><br>
+    <a href="/article/new" class="btn btn-primary btn-lg">Nowy Artykuł</a>
+    <br><br>
+    {% if articles %}
+        <br>
+        <table id="idatatable" datatable="" width="100%" class="display table table-hover table-bordered">
+            <thead>
+                <tr  class="bg-primary">
+                    <th>Artykuł</th>
+                    <th>Link</th>
+                    <th>Edytowany przez</th>
+                    <th>Data modyfikacji</th>
+                    <th>Akcje</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for article in articles %}
+                <tr scope="row">
+                    <td>{{ article.title }}</td>
+                    <td>/article/{{ article.id }}</td>
+                    {% set existingIds = [] %}
+                    {% for member in members %}
+                        {% if article.modifiedby == member.id %}
+                            {% if member.id not in existingIds %}
+                                <td>{{ member.name }} {{ member.surname }}</td>
+                                {% set existingIds = existingIds|merge([member.id]) %}
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                    <td>{{ article.ModifiedTime|date('Y-m-d H:i') }}</td>
+                    <td>
+                        <a href="/article/{{ article.id }}" class="btn btn-outline-primary">Podgląd</a>
+                        <a href="/article/edit/{{ article.id }}" class="btn btn-primary">Edycja</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Brak artykułów</p>
+    {% endif %}
+{% endblock %}
+{#
+{% block additionaljs %}
+    <script type="text/javascript">
+        $(document).ready( function () {
+            $('#idatatable').DataTable();
+        } );
+    </script>
+{% endblock %}#}

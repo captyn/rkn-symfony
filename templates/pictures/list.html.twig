@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Lista Obrazów RKN{% endblock %}
+
+{% block body %}
+    <div class="container-fluid">
+    
+    <br><br>
+    <a href="/pictures/new" class="btn btn-primary btn-lg">Nowy Obrazek</a>
+    <br><br>
+    {% if pictures %}
+        <br>
+        <table id="idatatable" datatable="" width="100%" class="display table table-hover table-bordered">
+            <thead>
+                <tr  class="bg-primary">
+                    <th>Obrazek</th>
+                    <th>Link</th>
+                    <th>Dodany przez:</th>
+                    <th>Data dodania:</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for pictures in pictures %}
+                <tr scope="row">
+                    <td>{{ pictures.title }}</td>
+                    <td>
+                        {% if pictures.id < 15 %}
+                            <img src="{{ pictures.picture}}" style="max-height: 200px; max-width: 300px">
+                        {% else %}
+                            <img src="/uploads/pictures/{{ pictures.picture}}" style="max-height: 200px; max-width: 300px">
+                        {% endif %}
+                    </td>
+                    {% set existingIds = [] %}
+                    {% for member in members %}
+                        {% if pictures.creator == member.id %}
+                            {% if member.id not in existingIds %}
+                                <td>{{ member.name }} {{ member.surname }}</td>
+                                {% set existingIds = existingIds|merge([member.id]) %}
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                    <td>{{ pictures.created|date('Y-m-d H:i') }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Brak Obrazów</p>
+    {% endif %}
+    
+    </div>
+{% endblock %}
+{#
+{% block additionaljs %}
+    <script type="text/javascript">
+        $(document).ready( function () {
+            $('#idatatable').DataTable();
+        } );
+    </script>
+{% endblock %}#}

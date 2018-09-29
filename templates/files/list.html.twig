@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Lista Plików RKN{% endblock %}
+
+{% block body %}
+    <div class="container-fluid">
+    
+    <br><br>
+    <a href="/file/new" class="btn btn-primary btn-lg">Wrzuć Plik</a>
+    <br><br>
+    {% if file %}
+        <br>
+        <table id="idatatable" datatable="" width="100%" class="display table table-hover table-bordered">
+            <thead>
+                <tr  class="bg-primary">
+                    <th>Tytuł</th>
+                    <th>Link</th>
+                    <th>Dodany przez:</th>
+                    <th>Data dodania:</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for file in file %}
+                <tr scope="row">
+                    <td>{{ file.name }}</td>
+                    <td>
+                        <a href="/uploads/files/{{ file.file}}">
+                            {% if file.file|last == 'f'  %}
+                                <i class="far fa-file-pdf fa-2x"></i>
+                            {% elseif file.file|last == 'c' or file.file|last == 'x' or file.file|last == 's' %}
+                                <i class="far fa-file-word fa-2x"></i>
+                            {% elseif file.file|last == 't' %}
+                                <i class="far fa-file-powerpoint fa-2x"></i>
+                            {% elseif file.file|last == 'm' %}
+                                <i class="far fa-file-excel fa-2x"></i>
+                            {% endif %}
+                        </a>
+                    </td>
+                    {% set existingIds = [] %}
+                    {% for member in members %}
+                        {% if file.creator == member.id %}
+                            {% if member.id not in existingIds %}
+                                <td>{{ member.name }} {{ member.surname }}</td>
+                                {% set existingIds = existingIds|merge([member.id]) %}
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                    <td>{{ file.created|date('Y-m-d H:i') }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Brak Plików</p>
+    {% endif %}
+    
+    </div>
+{% endblock %}
+{#
+{% block additionaljs %}
+    <script type="text/javascript">
+        $(document).ready( function () {
+            $('#idatatable').DataTable();
+        } );
+    </script>
+{% endblock %}#}

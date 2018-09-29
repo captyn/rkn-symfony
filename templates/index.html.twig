@@ -1,23 +1,26 @@
 {% extends 'base.html.twig' %}
 {% block title %} RKN {% endblock %}
 {% block body %}
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col col-md-8 col-sm-12">
-                <p style="text-align: justify">
+    <div class="container-fluid" style="background: url(https://www.eksperci.pw.edu.pl/design/standard/images/pw_outline.jpg) bottom left no-repeat; background-size: 350px">
+        <div class="row justify-content-center">
+            <div class="col col-md-8 col-sm-12 pb-4" >
+                <p>
                     {% for article in articles if article.deleted == FALSE %}
                         {% if article.articletype == 'index' %}
                             <h3>{{ article.title }}</h3>
                             <small>{{ article.ModifiedTime|date('Y-m-d H:i') }}</small>
                             <p style="text-align: justify">{{ article.body|raw }}</p>
+                            <br>
                         {% endif %}
                     {% endfor %}
                 </p>
                 <br>
                 <button type="button" class="btn btn-primary">Czytaj więcej</button>
                 <br>
+                <br>
+                <br>
             </div><br>
-            <div class="col col-md-4 col-sm-12">
+            {#<div class="col col-md-4 col-sm-12">
                 <div class="container-fluid">
 
                 </div>
@@ -41,21 +44,22 @@
                     <button type="button" class="btn btn-outline-primary">Primary</button>
                     <button type="button" class="btn btn-outline-primary">Primary</button>
                 </div><br>
-            </div>
+            </div>#}
         </div>
     </div>
     <div class="row bg-dark text-light">
-        <div class="container-fluid" style="text-align: center">
+        <div class="container-fluid mt-4 mb-4" style="text-align: center">
             <br>
-            <h5>Ponad 159 Kół Naukowych na PW</h5>
-            Wyszukaj Koła dla siebie
+            <h4>Ponad 159 Kół Naukowych na PW</h4>
+            <a href="/listaKN"><h5>Wyszukaj Koła dla siebie</h5></a>
             <br>
             {% include 'KN lists/KNcarousel.html.twig' %}
             <br><br>
         </div>
     </div>
-    <div class="row">
+    <div class="row mt-5 mb-5">
         <br>
+
         <div class="col" style="text-align: center">
             <br>
             <h5>Obserwuj nas na Facebook:</h5>
@@ -77,6 +81,7 @@
             <br>
         </div>
         <br>
+
     </div>
 
 {% endblock %}

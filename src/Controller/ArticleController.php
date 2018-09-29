@@ -2,7 +2,8 @@
 
 namespace App\Controller;
 
-use App\Entity\Article;
+use App\Entity\App\Article;
+use App\Entity\Olimp;
 
 
 use Symfony\Component\HttpFoundation\Response;
@@ -23,12 +24,16 @@ class ArticleController extends Controller
 
 
     /**
-     * @Route("/", name="index")
-     * @Method({"GET"})
+     * @Route("/", name="index", methods="GET")
      */
     public function index()
     {
-        $articles = $this->getDoctrine()->getRepository(Article::class)->findAll();
+        $articles = $this->getDoctrine()->getRepository(Article::class)
+            ->findBy(
+                array('article_type'=> 'index'),
+                array('last_modified' => 'DESC')
+            );
+
         return $this->render('index.html.twig', array('articles' => $articles));
     }
 
@@ -53,7 +58,7 @@ class ArticleController extends Controller
         $del=FALSE;
         $article->setDeleted($del);
         $form = $this->createFormBuilder($article)
-            ->add('title', TextType::class, array('attr' => array('label' => 'Tytuł','class' => 'form-control')))
+            ->add('title', TextType::class, array('label' => 'Tytuł','attr' => array('class' => 'form-control')))
             ->add('article_type', ChoiceType::class, array(
                 'attr' => array('class' => 'custom-select'),
                 'label' => 'Typ Artykułu',
@@ -65,11 +70,11 @@ class ArticleController extends Controller
                 ),
             ))
             ->add('body', TextareaType::class, array(
+                'label' => 'Treść Artykułu',
                 'required' => false,
-                'attr' => array('label' => 'Treść Artykułu','textarea','class' => 'form-control')
+                'attr' => array('textarea','class' => 'form-control')
             ))
             ->add('creator', TextType::class, array('required' => false,'attr' => array('class' => 'form-control')))
-            ->add('modified_by', TextType::class, array('required' => false,'attr' => array('class' => 'form-control')))
             ->add('save', SubmitType::class, array(
                 'label' => 'Utwórz',
                 'attr' => array('class' => 'btn btn-primary mt-3')
@@ -78,6 +83,7 @@ class ArticleController extends Controller
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()) {
             $article = $form->getData();
+            $article->setModifiedby($form->get('creator')->getData());
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($article);
             $entityManager->flush();
@@ -96,7 +102,7 @@ class ArticleController extends Controller
         $article = new Article();
         $article = $this->getDoctrine()->getRepository(Article::class)->find($id);
         $form = $this->createFormBuilder($article)
-            ->add('title', TextType::class, array('attr' => array('class' => 'form-control')))
+            ->add('title', TextType::class, array('label' => 'Tytuł', 'attr' => array('class' => 'form-control')))
             ->add('article_type', ChoiceType::class, array(
                 'attr' => array('class' => 'custom-select'),
                 'label' => 'Typ Artykułu',
@@ -108,6 +114,7 @@ class ArticleController extends Controller
                 ),
             ))
             ->add('body', TextareaType::class, array(
+                'label' => 'Treść Artykułu',
                 'required' => false,
                 'attr' => array('textarea', 'class' => 'form-control')
             ))
@@ -119,7 +126,7 @@ class ArticleController extends Controller
                     'Nie' => 'FALSE',
                     'Tak' => 'TRUE',
                 ),
-                'preferred_choices' => array('Nie'),
+                'data' => 'FALSE',
             ))
             ->add('save', SubmitType::class, array(
                 'label' => 'Zapisz',
@@ -138,22 +145,60 @@ class ArticleController extends Controller
     }
 
     /**
-     * @Route("/article/list", name="article_list")
-     * @Method({"GET"})
+     * @Route("/article/list", name="article_list", methods="GET")
      */
     public function artciles() {
-        $articles= $this->getDoctrine()->getRepository(Article::class)->findAll();
-        return $this->render('article/list.html.twig', array('articles' => $articles));
+        $articles= $this->getDoctrine()->getRepository(Article::class)
+            ->findBy(
+                array('deleted' => 'false'),
+                array('last_modified' => 'DESC')
+            );
+
+
+        $pgdb = new Olimp();
+        $pgdb->dbConnect();
+
+        $res = $pgdb->Q("SELECT o.uid AS id, o.org_id, o.name AS name, o.surname AS surname
+													FROM mainframe.vroles_active_extend o
+													
+						WHERE o.org_id = 54223  ORDER BY  o.uid
+          ");
+
+
+        return $this->render('article/list.html.twig', array('articles' => $articles, 'members' => $res));
     }
 
 
+    /**
+     * @Route("/article/{id}", name="article_show", methods="GET")
+     */
+    public function show($id) {
+        $article= $this->getDoctrine()->getRepository(Article::class)
+            ->findOneBy(
+                array(
+                    'id' =>$id,
+                    'deleted'=>'false'
+                ));
 
+
+        $pgdb = new Olimp();
+        $pgdb->dbConnect();
+
+        $res = $pgdb->Q("SELECT o.uid AS id, o.org_id, o.name AS name, o.surname AS surname
+													FROM mainframe.vroles_active_extend o
+													
+						WHERE o.org_id = 54223  ORDER BY  o.uid
+          ");
+
+
+        return $this->render('article/show.html.twig', array('article' => $article, 'members' => $res));
+    }
 
 
     /**
      * @Route("/news/{slug}")
      */
-    public function show($slug)
+    public function showd($slug)
     {
         $comments = [
             'DDDDDDDDDDD',
